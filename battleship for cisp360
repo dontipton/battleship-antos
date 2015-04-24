@@ -1,0 +1,333 @@
+// Sample skeleton for incoming function
+// MAKE SURE to replace incomingStub listed in the fire[] array
+//   with your function name!
+#include <iostream>
+#include "battleship.h"
+#include <cstdlib>
+#include <iomanip>
+using namespace std;
+/*
+int
+OnyangoAttack(int mode, int opponent)
+{
+    int column;
+    char row;
+    int ret;
+// You will probably need static variables here to keep track of status,
+// Such as where you fired upon already, what ships were hit, etc.
+    static bool shipFound, fired, searched[BS_ocean_ROWS][BS_ocean_COLS];
+    static int rowNdx, colNdx, firstHitRow, firstHitCol, horiz, vert, i,k;
+    static const int openWater = 0;
+
+    switch(mode) {
+    case BS_MODE_NEW_GAME:
+        shipFound = false;
+        horiz = 0;
+        vert = 0;
+
+        for (i = 0; i < BS_ocean_ROWS; i++)
+            {
+            for (k = 0; k < BS_ocean_COLS; k++)
+                searched[i][k] = false;
+            }
+
+        break;
+    case BS_MODE_CONTINUE_GAME:
+// Student must create some algorithm to decide what row and column to fire
+//   on, then call exactly as follows.
+
+
+        fired = false;
+
+        if (shipFound == false)
+            {
+            do
+                {
+                row = 'A' + (rand() % BS_ocean_ROWS);
+                column = rand() % BS_ocean_COLS;
+                }
+            while (searched[row - 'A'][column] == true);
+
+            ret = fire[opponent](row, column+1);
+            searched[row - 'A'][column] = true;
+
+            if ((ret & BS_SHIP_HIT) == BS_SHIP_HIT)
+                {
+                firstHitRow = row - 'A';
+                firstHitCol = column;
+                shipFound = true;
+                rowNdx = firstHitRow;
+                colNdx = column;
+                horiz = 0;
+                vert = 0;
+                }
+
+
+            }
+
+        else
+            {
+            if (horiz < 2)
+                {
+                if (horiz < 1)
+                    {
+                    if (colNdx + 1 < BS_ocean_COLS)
+                        {
+                        if (searched[rowNdx][colNdx+1] == false)
+                            {
+                            colNdx++;
+                            ret = fire[opponent](rowNdx+'A',colNdx+1);
+                            searched[rowNdx][colNdx] = true;
+                            fired = true;
+                            if ( ret == openWater)
+                                {
+                                colNdx = firstHitCol;
+                                horiz++;
+                                }
+                           }
+                        else
+                            {
+                            colNdx = firstHitCol;
+                            horiz++;
+                            }
+                        }
+                    else
+                        {
+                        colNdx = firstHitCol;
+                        horiz++;
+                        }
+                    }
+
+
+                if (horiz < 2 && !fired)
+                    {
+                    if (colNdx -1 >= 0)
+                        {
+                        if (searched[rowNdx][colNdx-1] == false)
+                            {
+                            colNdx--;
+                            ret = fire[opponent](rowNdx+'A',colNdx+1);
+                            searched[rowNdx][colNdx] = true;
+                            fired = true;
+                            if ( ret == openWater)
+                                {
+                                colNdx = firstHitCol;
+                                horiz++;
+                                }
+                           }
+                        else
+                            {
+                            colNdx = firstHitCol;
+                            horiz++;
+                            }
+                        }
+                    else
+                        {
+                        colNdx = firstHitCol;
+                        horiz++;
+                        }
+
+
+                    }
+                }
+
+            if (!fired)
+                {
+                if (vert < 1)
+                    {
+                        if (rowNdx +1 < BS_ocean_ROWS)
+                            {
+                            if (searched[rowNdx+1][colNdx] == false)
+                                {
+                                rowNdx++;
+                                ret = fire[opponent](rowNdx+'A',colNdx+1);
+                                searched[rowNdx][colNdx] = true;
+                                fired = true;
+                                if ( ret == openWater)
+                                    {
+                                    rowNdx = firstHitRow;
+                                    vert++;
+                                    }
+                               }
+                            else
+                                {
+                                rowNdx = firstHitRow;
+                                vert++;
+                                }
+                            }
+                        else
+                            {
+                            rowNdx = firstHitRow;
+                            vert++;
+                            }
+                    }
+                if (vert < 2 && !fired)
+                    {
+                        if (rowNdx -1 >= 0)
+                            {
+                            if (searched[rowNdx-1][colNdx] == false)
+                                {
+                                rowNdx--;
+                                ret = fire[opponent](rowNdx+'A',colNdx+1);
+                                searched[rowNdx][colNdx] = true;
+                                fired = true;
+                                if ( ret == openWater)
+                                    {
+                                    rowNdx = firstHitRow;
+                                    vert++;
+                                    }
+                               }
+                            else
+                                {
+                                rowNdx = firstHitRow;
+                                vert++;
+                                }
+                            }
+                        else
+                            {
+                            rowNdx = firstHitRow;
+                            vert++;
+                            }
+                    }
+                }
+
+            }
+//  If you hit the opponent, you must look at the integer return code
+//  here to help decide where to attack next!
+            if ((ret & BS_SHIP_SANK) == BS_SHIP_SANK)
+                    {
+                    shipFound = false;
+                    }
+
+
+        break;
+    }
+    return 0;
+}*/
+int
+OnyangoIncoming(char row, int col)
+{
+    int returnCode = 0;
+    int rowCalled, colCalled;
+    static int ocean[BS_GRID_ROWS][BS_GRID_COLS];
+
+    static int carrierHits = 0, battleshipHits = 0,
+               cruiserHits = 0, submarineHits = 0, destroyerHits = 0;
+
+        colCalled = col - 1;
+        rowCalled = row - 'A';
+
+        // Starting new game
+        if (row == '\0' && col == 0)
+        {
+            // need to initialize your ocean, ship placements, etc
+            int i = 0, j = 0;
+            destroyerHits = 0;
+            submarineHits = 0;
+            cruiserHits = 0;
+            battleshipHits = 0;
+            carrierHits = 0;
+            for (i = 0; i < BS_GRID_COLS; i++)
+            {
+                for (j = 0; j < BS_GRID_ROWS; j++)
+                {
+                    ocean[i][j] = 0;
+                }
+            }
+
+            for (int i=0; i < BS_CARRIER_SIZE; i++)
+            {
+              ocean[0][i] = BS_CARRIER;
+            }
+
+            for (int i=0; i < BS_BATTLESHIP_SIZE; i++)
+            {
+              ocean[1][i] = BS_BATTLESHIP ;
+            }
+            for (int i=0; i < BS_CRUISER_SIZE; i++)
+            {
+              ocean[2][i] = BS_CRUISER ;
+            }
+            for (int i=0; i < BS_DESTROYER_SIZE; i++)
+            {
+              ocean[3][i] = BS_DESTROYER ;
+            }
+            for (int i=0; i < BS_SUBMARINE_SIZE; i++)
+            {
+                ocean[4][i] = BS_SUBMARINE ;
+            }
+
+        }
+        else if (toupper(row) < 'A' || toupper(row) > 'J' || col < 1 || col > BS_GRID_COLS)
+        {
+            return 0;
+        }
+        else
+        {
+            if (ocean[rowCalled][colCalled] != 0)
+            {
+                returnCode |= ocean[rowCalled][colCalled];
+                if (ocean[rowCalled][colCalled] == BS_CARRIER)
+                {
+                    carrierHits += 1;
+                    returnCode |= BS_SHIP_HIT;
+                    returnCode |= BS_CARRIER;
+                    if (carrierHits >= BS_CARRIER_SIZE)
+                        returnCode |= BS_SHIP_SANK;
+                }
+                else if (ocean[rowCalled][colCalled] == BS_BATTLESHIP)
+                {
+                    battleshipHits += 1;
+                    returnCode |= BS_SHIP_HIT;
+                    returnCode |= BS_BATTLESHIP;
+                    if (battleshipHits >= BS_BATTLESHIP_SIZE)
+                        returnCode |= BS_SHIP_SANK;
+                }
+                else if (ocean[rowCalled][colCalled] == BS_CRUISER)
+                {
+                    cruiserHits += 1;
+                    returnCode |= BS_SHIP_HIT;
+                    returnCode |= BS_CRUISER;
+                    if (cruiserHits >= BS_CRUISER_SIZE)
+                        returnCode |= BS_SHIP_SANK;
+                }
+                else if (ocean[rowCalled][colCalled] == BS_SUBMARINE)
+                {
+                    submarineHits += 1;
+                    returnCode |= BS_SHIP_HIT;
+                    returnCode |= BS_SUBMARINE;
+                    if (submarineHits >= BS_SUBMARINE_SIZE)
+                        returnCode |= BS_SHIP_SANK;
+                }
+                else if (ocean[rowCalled][colCalled] == BS_DESTROYER)
+                {
+                    destroyerHits += 1;
+                    returnCode |= BS_SHIP_HIT;
+                    returnCode |= BS_DESTROYER;
+                    if (destroyerHits >= BS_DESTROYER_SIZE)
+                        returnCode |= BS_SHIP_SANK;
+                }
+
+
+            // Check: if it is a hit, update the return code
+            //  with the proper values
+            }
+            else
+            {
+                returnCode = 0;
+            }
+
+
+            // If open water, then leave the return code as 0
+        }
+
+
+return returnCode;
+}
+
+
+
+
+int (*battleship[MaxPlayerCount])(int, int) = {NULL, battleStub};
+int (*fire[MaxPlayerCount])(char, int)= {NULL, OnyangoIncoming};
+char const *playerName[MaxPlayerCount] = {"", "Donald Onyango"};
